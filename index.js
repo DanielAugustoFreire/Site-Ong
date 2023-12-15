@@ -20,12 +20,12 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 //Sessão por 30 Minutos
+        maxAge: 1000 * 60 * 60 * 24 //Sessão por 1 Dia
     }
 }))
 
 app.get('/', PaginaMenu);//certo
-app.get('/paginaGerenciamento',PaginaGerenciamento/*,autenticar*/);//certo
+app.get('/paginaGerenciamento',PaginaGerenciamento,autenticar);//certo
 app.get('/Quem_somos',QuemSomos);//certo
 app.get('/doar',Doar);
 app.get('/seja_um_voluntario',SejaUmVoluntario);//certo
@@ -41,16 +41,6 @@ app.listen(porta, host, () => {
     console.log(`Servidor executando na url http://${host}:${porta}`);
 })
 
-app.post('/validarLogin', (requisicao, resposta) => {
-    const email = requisicao.body.email;
-    const senha = requisicao.body.senha;
-    if (email === 'admin@admin.adm' && senha === 'admin'){
-        usuarioAutenticado = true;
-        resposta.redirect('/');
-    }
-
-})
-
 function autenticar(requisicao, resposta, next) {
     if (requisicao.session.usuarioAutenticado) {
         next();
@@ -60,7 +50,19 @@ function autenticar(requisicao, resposta, next) {
     }
 }
 
-function PaginaMenu(requisicao, resposta) {
+app.post('/validarLogin', (requisicao, resposta) => {
+    const email = requisicao.body.email;
+    const senha = requisicao.body.senha;
+    if (email === 'admin@admin.adm' && senha === 'admin'){
+        requisicao.session.usuarioAutenticado = true;
+        resposta.redirect('/');
+    }
+
+})
+
+
+
+function PaginaMenu(requisicao, resposta) {//feito
     const dataUltimoAcesso = requisicao.cookies.DataUltimoAcesso;
     const data = new Date();
     resposta.cookie("DataUltimoAcesso", data.toLocaleDateString() + " " + data.toLocaleTimeString(), {
@@ -251,7 +253,7 @@ function PaginaMenu(requisicao, resposta) {
     </html>`);
 }
 
-function PaginaGerenciamento(requisicao, resposta){
+function PaginaGerenciamento(requisicao, resposta){//feito
     resposta.end(`
     <!DOCTYPE html>
 <html lang="pt-br">
@@ -389,7 +391,7 @@ function PaginaGerenciamento(requisicao, resposta){
     `);
 }
 
-function QuemSomos(requisicao,resposta){
+function QuemSomos(requisicao,resposta){//feito
     resposta.end(`
     <!doctype html>
 <html lang="en">
@@ -532,18 +534,386 @@ function QuemSomos(requisicao,resposta){
 }
 
 function Doar(requisicao,resposta){
-    resposta.end(``);
+    resposta.end(
+        `
+        <!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doação</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link href="assets/css/DOACAO_MAIN.css" rel="stylesheet" type="text/css">
+  <link href="assets/images/logo3.png" rel="icon">
+  <script src="assets/js/logado.js"></script>
+</head>
+
+<body>
+<header>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#"><img src="assets/images/logo3.png" width="40px" alt=""></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+      <ul class="navbar-nav"> 
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/noticia">Notícias</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Quem_somos">Quem Somos?</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/doar">Doar</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="voluntario" href="/seja_um_voluntario">Seja Voluntário</a>
+        </li>
+      </ul>
+    </div>
+    <button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button>
+  </div>
+</nav>
+</header>
+
+  <section id="hero" class="hero">
+    <div style="background-image: url('assets/images/orsrc16192.jpg');">
+    <div class="container position-relative">
+      <div class="row gy-5" data-aos="fade-in">
+        <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center text-center text-lg-start">
+          <h2>Bem Vindo a <span>Doações</span></h2>
+          <p>Ao fazer uma doação para a ONG Save Pets, você estará contribuindo para abrigar animais de rua, fornecer
+            vacinas,
+            cuidados médicos e muito mais. Sua generosidade faz a diferença na vida desses animais.</p>
+          <div class="d-flex justify-content-center justify-content-lg-start">
+          </div>
+        </div>
+        <div class="col-lg-6 order-1 order-lg-2">
+          <img src="assets/images/Dinheiro.png" class="img-fluid mt-5" alt="" data-aos="zoom-out" data-aos-delay="100"
+            width="75%">
+        </div>
+      </div>
+    </div>
+
+    <div class="icon-boxes position-relative">
+      <div class="container position-relative">
+        <div class="row gy-4 mt-5">
+          <h2 class="title">Meios de Doação:</h2>
+
+
+          <div class="col-xl-3 col-md-6 div_center" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon-box">
+              <div class="icon"><i class="bi bi-gem"></i></div>
+              <a href="/pix" class="stretched-link"></a><!--Link Pix-->
+              <img src="assets/images/pix232.png" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="120"
+                style="margin-top: 20px;">
+            </div>
+          </div><!--End Icon Box -->
+
+          <div class="col-xl-3 col-md-6 div_center" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon-box icon-box1">
+              <div class="icon"><i class="bi bi-easel"></i></div>
+              <a href=/boleto" class="stretched-link"></a><!--Link Boleto-->
+              <img src="assets/images/Boleto.png" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="120"
+                style="margin-top: 20px;">
+            </div>
+          </div><!--End Icon Box -->
+
+          <div class="col-xl-3 col-md-6 div_center" data-aos="fade-up" data-aos-delay="300">
+            <div class="icon-box">
+              <div class="icon"><i class="bi bi-geo-alt"></i></div>
+              <a href="/cartao" class="stretched-link"></a><!--Link Cartão-->
+              <img src="assets/images/cartaoacess.png" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="120"
+                style="margin-top: 20px;">
+            </div>
+          </div><!--End Icon Box -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+    <div style="background-color: white;" class="container-fluid">
+      <div style="background-color: white;display: flex;justify-content: space-between;" class="">
+        <div class="container-fluid position-relative">
+          <div>
+            <h2 class="text-center" style="color: black;">Doar de Outra Maneira:</h2>
+            <h4 class="text-center">Um produto, rações entre outros.</h4>
+            <div class="centro">
+              <img style="max-width: 100%; height: auto;padding-bottom: 5px;" class="imagem"
+                src="assets/images/seta.png" width="150px" class="" alt="">
+            </div>
+          </div>
+
+          <!--Inicio Forms-->
+          <div class="container position-relative border border-dark rounded " style="color:white; background-color: gray;background-image: url('assets/images/orsrc53752_edited.jpg');background-size: cover;background-repeat: no-repeat;padding-top: 25px;">
+            <h4 style="color:white; text-align: center;font-weight: bolder;">Preencha esse formulário corretamente e selecionando as opções corretas para sua doação:</h2>
+              <div class="container position-relative">
+                <form name="cadastro" action="" method="">
+
+                  <label for="tnome" style="font-weight: bolder;">Nome:</label><br>
+                  <input type="text" name="txtnome" size="40" maxlength="30" required="required"
+                    placeholder="Insira seu Nome"><br>
+
+                  <label for="temail" style="font-weight: bolder;">Digite seu e-mail:</label></br>
+                  <input type="text" name="txte-mail" size="40" maxlength="30" required="required"
+                    placeholder="Insira seu e-mail"></br>
+
+                  <label for="ttelefone" style="font-weight: bolder;">Digite seu telefone:</label></br>
+                  <input type="tel" id="tcelular" title="(99) 99999-9999" placeholder="(99) 99999-9999"
+                    pattern="\(\d{2}\)\s\d{5}-\d{4}"  required="required" onkeypress="mascara('+## (##)#####-####',this,event)" /></br>
+
+                  <label for="tnome" style="font-weight: bolder;">CPF:</label><br>
+                  <input type="text" name="txtnome" size="40" maxlength="30" required="required"
+                    placeholder="000.000.000-00" pattern="\d{3}.\d{3}.\d{3}-\d{2}" onkeypress="mascara(' ###.###.###-##',this,event)"><br>
+
+                  <label for="tdoacao" style="font-weight: bolder;">Meio de Doação:</label></br>
+                  <input type="radio" name="opcao1" value="1" required="required" />Presencial
+                  <input type="radio" name="opcao1" value="1" required="required" />Correios <br>
+
+                  <label for="arquivo" style="font-weight: bolder;">Caso seja Correios por favor,<br>
+                  </label> <br>
+                  <input type="file" text="Procurar" name="bfile" /><br>
+
+
+                  <br />
+                  <input class="btn btn-danger" type="reset" name="Cancelar" value="Limpar" />
+                  <input class="btn btn-primary" type="submit" name="Enviar" value="Enviar">
+                </form>
+              </div>
+              <br>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    </div>
+
+    <script>
+      function mascara(m,t,e){
+    var cursor = t.selectionStart;
+    var texto = t.value;
+    texto = texto.replace(/\D/g,'');
+    var l = texto.length;
+    var lm = m.length;
+    if(window.event) {
+       id = e.keyCode;
+    } else if(e.which){
+       id = e.which;
+    }
+    cursorfixo=false;
+    if(cursor < l)cursorfixo=true;
+    var livre = false;
+    if(id == 16 || id == 19 || (id >= 33 && id <= 40))livre = true;
+    ii=0;
+    mm=0;
+    if(!livre){
+       if(id!=8){
+          t.value="";
+          j=0;
+          for(i=0;i<lm;i++){
+             if(m.substr(i,1)=="#"){
+                t.value+=texto.substr(j,1);
+                j++;
+             }else if(m.substr(i,1)!="#"){
+                      t.value+=m.substr(i,1);
+                    }
+                    if(id!=8 && !cursorfixo)cursor++;
+                    if((j)==l+1)break;
+
+          }
+       }
+    }
+    if(cursorfixo && !livre)cursor--;
+      t.setSelectionRange(cursor, cursor);
+  }
+    </script>
+  </section>
+  <br><br><br>
+  <footer class="bg-secondary d-flex flex-wrap justify-content-between align-items-center py-5">
+    <p class="col-md-4 mb-0 mx-4">&copy; 2023 Company, Inc</p>
+
+    <ul class="nav col-md-4 mx-4 justify-content-end">
+      <li class="nav-item"><a href="/" class="nav-link px-2 text-black">Home</a></li>
+    </ul>
+  </footer>
+</body>
+
+</html>
+        `);
 }
 
 function SejaUmVoluntario(requisicao,resposta){
     resposta.end(``);
 }
 
-function Noticias(requisicao,resposta){
-    resposta.end(``);
+function Noticias(requisicao,resposta){//feito
+    resposta.end(`
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="assets/images/logo3.png" type="icon">
+
+    <link rel="stylesheet" href="assets/css/estilos.css" type="text/css">
+    <script src="assets/js/logado.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body class="bg-secondary">
+    <!--HEADER(NAVEGAÇÃO)-->
+    <header>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#"><img src="assets/images/logo3.png" width="40px" alt=""></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+          <ul class="navbar-nav"> 
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/noticia">Notícias</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/Quem_somos">Quem Somos?</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/doar">Doar</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="voluntario" href="/seja_um_voluntario">Seja Voluntário</a>
+            </li>
+          </ul>
+        </div>
+        <button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button>
+      </div>
+    </nav>
+  </header>
+
+      <div class="bg-black bg-opacity-75 p-5 my-5">
+        
+        <div class="container px-4 text-center">
+          <div class="row gx-5">
+            <div class="col">
+             <div class="p-3"><img src="/cachorro-emocionado.jpg"  class="rounded-circle" width="300px" height="300px"></div>
+            </div>
+            <div class="col">
+              <div class="p-5 text-white" ><h2 id="ultimas">ULTIMAS NOTICIAS</h2><br>
+                <p>A ONG Save Pets personifica o amor pelos animais, resgatando, cuidando e encontrando lares para eles. <br>
+                  <br> Sua dedicação demonstra compaixão genuína e promove a conscientização sobre adoção responsável e direitos dos animais, transformando vidas peludas com esperança e cuidado.
+                </p><a href="('/Quem_somos" class="link-light">Descubra mais sobre Nos:</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+     <!--CONTEUDO DAS NOTICIAS-->
+     <div class="container" id="coll">
+        <div>
+          <div class=" d-inline-block" style="margin-top: 2%; margin-right: 11px;">
+            <div class="card bg-dark" id="iso" style="color: white;">
+                <img class="card-img-top" src="/cao6.jpg" alt="Imagem de capa do card">
+                <div class="card-body">
+                    <h5 class="card-title">Cachorros Resgatados</h5>
+                    <p class="card-text">SP: prefeitura resgata 51 cães entre animais mortos em canil ilegal... </p>
+                    <a href="https://noticias.uol.com.br/cotidiano/ultimas-noticias/2023/03/29/resgate-cachorros-ribeirao-pires.htm" target="_blank" class="btn btn-success">Ler mais</a>
+                </div>
+            </div>
+        </div>
+            <div class=" d-inline-block">
+                <div class="card bg-dark" id="iso" style=" color: white;">
+                    <img class="card-img-top" src="assets/images/cao5.jpg" alt="Imagem de capa do card">
+                    <div class="card-body">
+                        <h5 class="card-title">Vacinação</h5>
+                        <p class="card-text">A ong SavePets promove uma campanha de vacinação...</p>
+                        <a href="https://g1.globo.com/rj/rio-de-janeiro/noticia/2023/08/18/campanha-de-vacinacao-antirrabica-no-rio-comeca-no-proximo-sabado.ghtml" target="_blank" class="btn btn-success">Ler mais</a>
+                    </div>
+                </div>
+            </div>
+            <div class=" d-inline-block">
+                <div class="card bg-dark" id="iso" style=" color: white; margin-right: 11px;">
+                    <img class="card-img-top" src="assets/images/cao4.jpg" alt="Imagem de capa do card">
+                    <div class="card-body">
+                        <h5 class="card-title">Maltratos </h5>
+                        <p class="card-text">A ong SavePets acionou as autoridades apos identificar...</p>
+                        <a href="https://g1.globo.com/fantastico/noticia/2021/02/14/veja-como-denunciar-maus-tratos-ou-crueldade-contra-animais.ghtml" target="_blank" class="btn btn-success">Ler mais</a>
+                    </div>
+                </div>
+            </div>
+            <div class=" d-inline-block" style="margin-top: 9%;">
+                <div class="card bg-dark" id="iso" style=" color: white;">
+                    <img class="card-img-top" src="assets/images/cao3.jpg" alt="Imagem de capa do card">
+                    <div class="card-body">
+                        <h5 class="card-title">Doaçoes</h5>
+                        <p class="card-text">A ong SavePets realizou algumas doaçoes para a ONG petlove</p>
+                        <a href="https://www.petlove.com.br/doacoes" target="_blank" class="btn btn-success">Ler mais</a>
+                    </div>
+                </div>
+            </div>
+            <div class=" d-inline-block" style="margin-top: 9%;">
+                <div class="card bg-dark" id="iso" style=" color: white; margin-right: 11px;">
+                    <img class="card-img-top" src="assets/images/cao5.jpg" alt="Imagem de capa do card">
+                    <div class="card-body">
+                        <h5 class="card-title">Adoção</h5>
+                        <p class="card-text">A ong SavePets realizou uma campanha de adoção de....</p>
+                        <a href="https://www.osindefesos.com.br/adote" target="_blank" class="btn btn-success">Ler mais</a>
+                    </div>
+                </div>
+            </div>
+            <div class=" d-inline-block" style="margin-top: 9%;">
+                <div class="card bg-dark" id="iso" style="color: white;">
+                    <img class="card-img-top" src="assets/images/cao6.jpg" alt="Imagem de capa do card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cuide do seu cão</h5>
+                        <p class="card-text">Nós promovemos uma palestra dando dicas de como cuidar do....</p>
+                        <a href="https://www.ecycle.com.br/como-cuidar-de-um-cachorro/" target="_blank" class="btn btn-success">Ler mais</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <hr>
+<!--FOOTER-->
+<footer class="bg-secondary d-flex flex-wrap justify-content-between align-items-center py-5">
+  <p class="col-md-4 mb-0 mx-4">&copy; 2023 Company, Inc</p>
+
+  <ul class="nav col-md-4 mx-4 justify-content-end">
+    <li class="nav-item"><a href="/" class="nav-link px-2 text-black">Home</a></li>
+  </ul>
+</footer>
+
+
+
+
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>
+    `);
 }
 
-function cartao(requisicao,resposta){
+function cartao(requisicao,resposta){// arrumar
     resposta.end(`
     <!DOCTYPE html>
 <html lang="pt-BR">
@@ -554,8 +924,8 @@ function cartao(requisicao,resposta){
     <title>Cartão</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" href="/DOACAO_CARTAO.css">
-    <link rel="icon" href="/cartaoicon.png">
+    <link rel="stylesheet" href="assets/css/DOACAO_CARTAO.css">
+    <link rel="icon" href="assets/images/cartaoicon.png">
     <style>
         .container1 {
             display: flex;
@@ -572,7 +942,7 @@ function cartao(requisicao,resposta){
     <header class="container1">
         <div class="container1">
         <div >
-            <img src="/todas_as_bandeiras.png">
+            <img src="assets/images/todas_as_bandeiras.png">
         </div>
         <div class="container-fluid">
             <div>
@@ -628,16 +998,16 @@ function cartao(requisicao,resposta){
                         <option value=“10”>VISA Electron</option>
                     </select>
                     <label for="valor">Valor:</label>
-                    <input type="text" name="valor" size="13" maxlength="14" class="form-control" required onkeypress="mascaraValor(event)">
+                    <input type="text" name="valor" size="13" maxlength="17" class="form-control" required onkeypress="mascara(' R$###.###.###,##',this,event)">
                 </div>
 
                 <div class="form-group">
                     <label for="numcartao">Numero do cartão:</label><br>
-                    <input type="text" name="numcartao" maxlength="14" required class="form-control" onkeypress="mascaraNumeroCartao(event)">
+                    <input type="text" name="numcartao" maxlength="14" required class="form-control" onkeypress="mascara('#### #### ####',this,event)">
                     <p><strong>somente numeros, sem pontos</strong></p>
                     <label for="numcartao">Código CVV:</label><br>
 
-                    <input type="text" name="cvv" size="3" maxlength="3" required class="form-control" onkeypress="mascaraCVV(event)">
+                    <input type="text" name="cvv" size="3" maxlength="3" required class="form-control" onkeypress="mascara('###',this,event)">
                     <p class="peq2"><strong>localizado atrás do cartão</strong></p>
                 </div>
 
@@ -647,7 +1017,7 @@ function cartao(requisicao,resposta){
                     <input class="btn btn-outline-success" type="submit" value="Enviar" return false;>
                 </div>
 
-                <a href="/" class="voltar">Voltar para a página inicial</a>
+                <a href="/doar" class="voltar">Voltar para a página inicial</a>
             </form>
             <script>
                 document.querySelector('form').addEventListener('submit', function (event) {
@@ -657,68 +1027,45 @@ function cartao(requisicao,resposta){
                     // Redireciona o usuário para a página inicial após abrir o PDF
                 });
             </script>
-
-            <script>
-                function mascaraCPF(event) {
-                    const input = event.target;
-                    const digit = event.key;
-
-                    if (isNaN(digit)) {
-                        event.preventDefault();
-                        return;
-                    }
-            </script>
-
-<script>
-    function mascaraValor(event) {
-        const input = event.target;
-        const digit = event.key;
-
-        if (isNaN(digit) || digit === ' ') {
-            event.preventDefault();
-            return;
-        }
-
-        const value = input.value.replace(/\D/g, '');
-        input.value = formatCurrency(value);
+    <script>
+        function mascara(m,t,e){
+      var cursor = t.selectionStart;
+      var texto = t.value;
+      texto = texto.replace(/\D/g,'');
+      var l = texto.length;
+      var lm = m.length;
+      if(window.event) {
+         id = e.keyCode;
+      } else if(e.which){
+         id = e.which;
+      }
+      cursorfixo=false;
+      if(cursor < l)cursorfixo=true;
+      var livre = false;
+      if(id == 16 || id == 19 || (id >= 33 && id <= 40))livre = true;
+      ii=0;
+      mm=0;
+      if(!livre){
+         if(id!=8){
+            t.value="";
+            j=0;
+            for(i=0;i<lm;i++){
+               if(m.substr(i,1)=="#"){
+                  t.value+=texto.substr(j,1);
+                  j++;
+               }else if(m.substr(i,1)!="#"){
+                        t.value+=m.substr(i,1);
+                      }
+                      if(id!=8 && !cursorfixo)cursor++;
+                      if((j)==l+1)break;
+  
+            }
+         }
+      }
+      if(cursorfixo && !livre)cursor--;
+        t.setSelectionRange(cursor, cursor);
     }
-
-    function mascaraNumeroCartao(event) {
-        const input = event.target;
-        const digit = event.key;
-
-        if (isNaN(digit) || digit === ' ') {
-            event.preventDefault();
-            return;
-        }
-
-        const value = input.value.replace(/\D/g, '');
-        input.value = formatCardNumber(value);
-    }
-
-    function formatCurrency(value) {
-        const number = Number(value) / 100;
-        return number.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
-
-    function formatCardNumber(value) {
-        return value.replace(/(\d{4})(?=\d)/g, '$1 ');
-    }
-</script>
-<script>
-     function mascaraCVV(event) {
-                        const input = event.target;
-                        const digit = event.key;
-
-                        if (isNaN(digit) || digit === ' ') {
-                            event.preventDefault();
-                            return;
-                        }
-
-                        const value = input.value.replace(/\D/g, '');
-                        input.value = value.slice(0, 3);
-                    }
-</script>
+      </script>
             
             
         </div>
@@ -726,10 +1073,11 @@ function cartao(requisicao,resposta){
 </body>
 
 </html>
+    
     `);
 }
 
-function boleto(requisicao,resposta){
+function boleto(requisicao,resposta){//feito
     resposta.end(`
     <!DOCTYPE html>
     <html lang="pt-BR">
@@ -759,7 +1107,7 @@ function boleto(requisicao,resposta){
                         // Função JavaScript para redirecionar para outra página
                         function redirecionarParaOutraPagina() {
                             window.open("https://www.guiamuriae.com.br/wp-content/uploads/2017/01/Boleto-bancario-Foto-WC.jpg", "_blank");
-                            window.location.href = '/'
+                            window.location.href = '/doar'
                         }
                     </script>
                 </div>
@@ -772,7 +1120,7 @@ function boleto(requisicao,resposta){
         `);
 }
 
-function pix(requisicao,resposta){
+function pix(requisicao,resposta){//feito
     resposta.end(`
     <!DOCTYPE html>
 <html lang="pt-BR">
@@ -800,7 +1148,7 @@ function pix(requisicao,resposta){
         <h5>Numero de Telefone: (18) 99887-7665</h5>
 
         <br><br><br><br>
-        <a href="/" class="text-black" style="font-size: 30px;">Voltar</a>
+        <a href="/doar" class="text-black" style="font-size: 30px;">Voltar</a>
     </div>
 </body>
 

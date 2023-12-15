@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
         val.innerHTML = "SAIR";
         var vol = document.getElementById("voluntario");
         vol.textContent = "Gerenciar Voluntarios";
-        vol.href = "gerenciamento.html"
+        vol.href = "/paginaGerenciamento"
     }
 
     // Resto do seu código
@@ -32,7 +32,7 @@ function Validar() {
         // Defina o estado de login no Local Storage como verdadeiro
         localStorage.setItem('estaLogado', 'true');
 
-        location.href = "index.html";
+        location.href = "/";
         alert("Sucesso");
 
         // Após o redirecionamento, altere o texto do botão para "SAIR"
