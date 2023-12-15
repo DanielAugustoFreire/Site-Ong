@@ -89,19 +89,19 @@ function PaginaMenu(requisicao, resposta) {
               <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
                 <ul class="navbar-nav"> 
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="noticias.html">Notícias</a>
+                    <a class="nav-link" href="/noticia">Notícias</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="quem_somos.html">Quem Somos?</a>
+                    <a class="nav-link" href="/Quem_somos">Quem Somos?</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="DOACAO_MAIN.html">Doar</a>
+                    <a class="nav-link" href="/doar">Doar</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="voluntario" href="seja_um_voluntario.html">Seja Voluntário</a>
+                    <a class="nav-link" id="voluntario" href="/seja_um_voluntario">Seja Voluntário</a>
                   </li>
                 </ul>
               </div>
@@ -280,36 +280,36 @@ function PaginaGerenciamento(requisicao, resposta){
 </head>
 
 <body>
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="#"><img src="assets/images/logo3.png" width="40px" alt=""></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
-          <ul class="navbar-nav"> 
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="index.html">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="noticias.html">Notícias</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="quem_somos.html">Quem Somos?</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="DOACAO_MAIN.html">Doar</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" id="voluntario" href="gerenciamento.html">Gerenciar Voluntario</a>
-            </li>
-          </ul>
-        </div>
-        <button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button>
-      </div>
-    </nav>
-  </header>
+<header>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#"><img src="assets/images/logo3.png" width="40px" alt=""></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+      <ul class="navbar-nav"> 
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/noticia">Notícias</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Quem_somos">Quem Somos?</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/doar">Doar</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" id="voluntario" href="/seja_um_voluntario">Seja Voluntário</a>
+        </li>
+      </ul>
+    </div>
+    <button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button>
+  </div>
+</nav>
+</header>
 
 
 
@@ -405,36 +405,36 @@ function QuemSomos(requisicao,resposta){
 
   <body class="bg-white">
     
-    <header>
-      <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
-        <div class="container">
-          <a class="navbar-brand" href="#"><img src="/logo3.png" width="40px" alt=""></a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
-            <ul class="navbar-nav"> 
-              <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="index.html">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="noticias.html">Notícias</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="quem_somos.html">Quem Somos?</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="DOACAO_MAIN.html">Doar</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="voluntario" href="seja_um_voluntario.html">Seja Voluntário</a>
-              </li>
-            </ul>
-          </div>
-          <button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button>
-        </div>
-      </nav>
-    </header>
+  <header>
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#"><img src="assets/images/logo3.png" width="40px" alt=""></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+        <ul class="navbar-nav"> 
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/noticia">Notícias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/Quem_somos">Quem Somos?</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/doar">Doar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="voluntario" href="/seja_um_voluntario">Seja Voluntário</a>
+          </li>
+        </ul>
+      </div>
+      <button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button>
+    </div>
+  </nav>
+</header>
     
         <div class="bg-black bg-opacity-75 p-5 mt-5">
           
