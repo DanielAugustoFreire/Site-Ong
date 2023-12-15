@@ -1,0 +1,37 @@
+.custom-form-box{
+    background-color: white;
+    border: 1px solid #bcbaba;
+    padding: 10px;
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+}
+#asdf{
+    opacity: 2;
+}
+
+.form-background{
+    background-image: url('imagemdogg.jpg'); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content:center;
+}
+
+
+#j
+{
+    height: 60em;
+    background-color: rgba(255, 255, 255, 0.507);
+    margin-top: 5em;
+    border-radius: 50px 50px 50px 100px;
+}
+.btn-successs {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-successs:hover {
+    background-color: #218838;
+    border-color: #218838;
+}
