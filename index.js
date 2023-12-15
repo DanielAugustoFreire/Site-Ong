@@ -293,7 +293,7 @@ function PaginaGerenciamento(requisicao, resposta){//feito
     <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
       <ul class="navbar-nav"> 
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/noticia">Notícias</a>
@@ -619,7 +619,7 @@ function Doar(requisicao,resposta){
           <div class="col-xl-3 col-md-6 div_center" data-aos="fade-up" data-aos-delay="100">
             <div class="icon-box icon-box1">
               <div class="icon"><i class="bi bi-easel"></i></div>
-              <a href=/boleto" class="stretched-link"></a><!--Link Boleto-->
+              <a href="/boleto" class="stretched-link"></a><!--Link Boleto-->
               <img src="assets/images/Boleto.png" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="120"
                 style="margin-top: 20px;">
             </div>
@@ -751,7 +751,175 @@ function Doar(requisicao,resposta){
 }
 
 function SejaUmVoluntario(requisicao,resposta){
-    resposta.end(``);
+    resposta.end(`
+    <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <script src="assets/js/logado.js"></script>
+    <title>Voluntário</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/stilo_igor.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+
+<body class="form-background p-5"> 
+<header>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#"><img src="assets/images/logo3.png" width="40px" alt=""></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+      <ul class="navbar-nav"> 
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/noticia">Notícias</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Quem_somos">Quem Somos?</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/doar">Doar</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" id="voluntario" href="/seja_um_voluntario">Seja Voluntário</a>
+        </li>
+      </ul>
+    </div>
+    <button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button>
+  </div>
+</nav>
+</header>
+
+
+    <div id="j" class="p-3">
+        <br><br><br>
+        <div class=" pb-md-4 mx-auto text-center mb-0">
+            <h1 class="display-4 fw-normal text-body-emphasis text-black">Cadastro para voluntariado</h1>
+            <p class="fs-5 text-black"> 
+            </p>
+        </div>
+
+        <div class="container mt-5" id="asdf">
+            
+            <div class="row justify-content-center opacity-100" >
+                <div>
+                    <form action="seja_um_voluntario.html" method="POST" class="custom-form-box">
+                        <h1 class="text-center">Formulário de Contato</h1>
+                        <div class="form-group">
+                            <label for="nome">Nome:</label>
+                            <input type="text" class="form-control" id="nome" name="nome" required>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="numero">Data de Nascimento:</label>
+                  
+                            <input type="date" class="form-control" id="datanas" name="datanas" placeholder="00/00/0000" required>
+                          
+                        </div>
+    
+                        <div class="form-group">
+                          <label for="email">Email:</label>
+                          <input type="email" class="form-control" id="email" name="email" required placeholder="Digite seu e-mail">
+                      </div>
+                      
+    
+                        <div class="form-group">
+                            <label for="telefone">Telefone:</label>
+                            <input type="text" class="form-control" id="telefone" name="telefone" placeholder="(00)00000-0000" onkeypress="mascara(' +## (##) #####-####',this,event)" required>
+                            
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="sobre_voce">Conte mais sobre você:</label>
+                            <textarea class="form-control" id="sobre_voce" name="sobre_voce" rows="4"></textarea>
+                        </div>
+                        <br><br>
+    
+                        <button class="btn btn-success" type="button" onclick="validarCadastro() ">Enviar</button>
+                      </form>
+                      
+                      <script>
+          function validarCadastro() {
+    
+    var nome = document.getElementById('nome').value;
+    var email = document.getElementById('email').value;
+    var nome = document.getElementById('telefone').value;
+    var nome = document.getElementById('sobre_voce').value;
+   
+    if (nome.trim() !== '' && email.trim() !== '') {
+      
+      alert('Seu cadastro foi realizado com sucesso!');
+      location.reload();
+    } else {
+      
+      alert('Por favor, preencha todos os campos corretamente.');
+    }
+  }
+</script>
+                      </script>
+                    </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap JavaScript here if needed -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      function mascara(m,t,e){
+    var cursor = t.selectionStart;
+    var texto = t.value;
+    texto = texto.replace(/\D/g,'');
+    var l = texto.length;
+    var lm = m.length;
+    if(window.event) {
+       id = e.keyCode;
+    } else if(e.which){
+       id = e.which;
+    }
+    cursorfixo=false;
+    if(cursor < l)cursorfixo=true;
+    var livre = false;
+    if(id == 16 || id == 19 || (id >= 33 && id <= 40))livre = true;
+    ii=0;
+    mm=0;
+    if(!livre){
+       if(id!=8){
+          t.value="";
+          j=0;
+          for(i=0;i<lm;i++){
+             if(m.substr(i,1)=="#"){
+                t.value+=texto.substr(j,1);
+                j++;
+             }else if(m.substr(i,1)!="#"){
+                      t.value+=m.substr(i,1);
+                    }
+                    if(id!=8 && !cursorfixo)cursor++;
+                    if((j)==l+1)break;
+
+          }
+       }
+    }
+    if(cursorfixo && !livre)cursor--;
+      t.setSelectionRange(cursor, cursor);
+  }
+    </script>
+</body>
+<footer class="d-flex flex-wrap justify-content-between align-items-center py-5 mx-4">
+    <p class="col-md-4 mb-0">&copy; 2023 Company, Inc</p>
+
+    <ul class="nav col-md-4 justify-content-end">
+        <li class="nav-item"><a href="#" class="nav-link px-2 text-black">Home</a></li>
+    </ul>
+</footer>
+</html>
+    `);
 }
 
 function Noticias(requisicao,resposta){//feito
