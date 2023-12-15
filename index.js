@@ -58,8 +58,8 @@ function Logout(requisicao, resposta) {
 }
 
 app.post('/validarlogin', (requisicao, resposta) => {
-    let email = requisicao.body.emailAcesso;
-    let senha = requisicao.body.senhaAcesso;
+    const email = requisicao.body.emailAcesso;
+    const senha = requisicao.body.senhaAcesso;
     if (email === 'admin@admin.adm' && senha === 'admin'){
         requisicao.session.usuarioAutenticado = true;
         resposta.redirect('/');
