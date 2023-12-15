@@ -20,12 +20,12 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 //Sessão por 1 Dia
+        maxAge: 1000 * 60 * 15 //Sessão por 15 minutos
     }
 }))
 
 app.get('/', PaginaMenu);//certo
-app.get('/paginaGerenciamento',autenticar,PaginaGerenciamento);//certo
+app.get('/paginaGerenciamento',PaginaGerenciamento);//certo
 app.get('/Quem_somos',QuemSomos);//certo
 app.get('/doar',Doar);//certo
 app.get('/seja_um_voluntario',SejaUmVoluntario);//certo
@@ -57,15 +57,21 @@ function Logout(requisicao, resposta) {
     resposta.redirect('/login.html');
 }
 
-app.post('/validarLogin', (requisicao, resposta) => {
-    const email = requisicao.body.email;
-    const senha = requisicao.body.senha;
+app.post('/validarlogin', (requisicao, resposta) => {
+    let email = requisicao.body.emailAcesso;
+    let senha = requisicao.body.senhaAcesso;
     if (email === 'admin@admin.adm' && senha === 'admin'){
         requisicao.session.usuarioAutenticado = true;
         resposta.redirect('/');
     }
 
 })
+
+
+
+
+
+
 
 
 
