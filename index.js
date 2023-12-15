@@ -204,10 +204,10 @@ function PaginaMenu(requisicao, resposta) {//feito
             <div class="container px-4 text-center">
               <div class="row gx-5 table table-dark">
                 <div class="col table table-warning" id="coll">
-                  <div class="p-3 text-black"><h2>Amor Pelos Animais</h2>
-                    <p>A ONG Save Pets personifica o amor pelos animais, resgatando, cuidando e encontrando lares para eles. <br>
-                      <br> Sua dedicação demonstra compaixão genuína e promove a conscientização sobre adoção responsável e direitos dos animais, transformando vidas peludas com esperança e cuidado.
-                    </p><a href="/Quem_somos" class="link-dark">Descubra mais sobre Nos:</a>
+                  <div class="p-3 text-black"><h2>Tarefa Cumprida</h2>
+                    <p>Com a ajuda de empresas parceiras conseguimos com exito resgatar 72 animais no ano de 2023<br>
+                      <br> Nosso compromisso com nossos doadores esta sendo evidenciado a partir de nossas ações, muito obrigado a todos aqueles que doam, se voluntariam e colaboram com a calsa animal.
+                    </p><a href="/Quem_somos" class="link-dark">Descubra mais sobre Nos:</a>                                                                                                         
                   </div>
                 </div>
                 <div class="col" id="colll">
