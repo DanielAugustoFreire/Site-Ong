@@ -25,17 +25,19 @@ app.use(session({
 }))
 
 app.get('/', PaginaMenu);//certo
-app.get('/paginaGerenciamento',PaginaGerenciamento,autenticar);//certo
+app.get('/paginaGerenciamento',autenticar,PaginaGerenciamento);//certo
 app.get('/Quem_somos',QuemSomos);//certo
-app.get('/doar',Doar);
+app.get('/doar',Doar);//certo
 app.get('/seja_um_voluntario',SejaUmVoluntario);//certo
-app.get('/noticia',Noticias);
+app.get('/noticia',Noticias);//certo
 
 //metodos de doação
 app.get('/cartao',cartao);//certo
 app.get('/pix',pix);//certo
-app.get('/boleto',boleto);
+app.get('/boleto',boleto);//certo
 
+//deslogar
+app.get('/sair', Logout);
 
 app.listen(porta, host, () => {
     console.log(`Servidor executando na url http://${host}:${porta}`);
@@ -48,6 +50,11 @@ function autenticar(requisicao, resposta, next) {
     else {
         resposta.redirect("/login.html");
     }
+}
+
+function Logout(requisicao, resposta) {
+    requisicao.session.usuarioAutenticado = false;
+    resposta.redirect('/login.html');
 }
 
 app.post('/validarLogin', (requisicao, resposta) => {
@@ -108,7 +115,7 @@ function PaginaMenu(requisicao, resposta) {//feito
                   </li>
                 </ul>
               </div>
-              <button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button>
+              <a href="/sair"><button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button></a>
             </div>
           </nav>
         </header>
@@ -309,7 +316,7 @@ function PaginaGerenciamento(requisicao, resposta){//feito
         </li>
       </ul>
     </div>
-    <button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button>
+    <a href="/sair"><button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button></a>
   </div>
 </nav>
 </header>
@@ -434,7 +441,7 @@ function QuemSomos(requisicao,resposta){//feito
           </li>
         </ul>
       </div>
-      <button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button>
+      <a href="/sair"><button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button></a>
     </div>
   </nav>
 </header>
@@ -533,7 +540,7 @@ function QuemSomos(requisicao,resposta){//feito
     `)
 }
 
-function Doar(requisicao,resposta){
+function Doar(requisicao,resposta){//feito
     resposta.end(
         `
         <!DOCTYPE html>
@@ -545,9 +552,9 @@ function Doar(requisicao,resposta){
   <title>Doação</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-  <link href="assets/css/DOACAO_MAIN.css" rel="stylesheet" type="text/css">
-  <link href="assets/images/logo3.png" rel="icon">
-  <script src="assets/js/logado.js"></script>
+  <link href="/DOACAO_MAIN.css" rel="stylesheet" type="text/css">
+  <link href="/logo3.png" rel="icon">
+  <script src="/logado.js"></script>
 </head>
 
 <body>
@@ -577,7 +584,7 @@ function Doar(requisicao,resposta){
         </li>
       </ul>
     </div>
-    <button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button>
+    <a href="/sair"><button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button><a>
   </div>
 </nav>
 </header>
@@ -696,45 +703,7 @@ function Doar(requisicao,resposta){
 
     </div>
 
-    <script>
-      function mascara(m,t,e){
-    var cursor = t.selectionStart;
-    var texto = t.value;
-    texto = texto.replace(/\D/g,'');
-    var l = texto.length;
-    var lm = m.length;
-    if(window.event) {
-       id = e.keyCode;
-    } else if(e.which){
-       id = e.which;
-    }
-    cursorfixo=false;
-    if(cursor < l)cursorfixo=true;
-    var livre = false;
-    if(id == 16 || id == 19 || (id >= 33 && id <= 40))livre = true;
-    ii=0;
-    mm=0;
-    if(!livre){
-       if(id!=8){
-          t.value="";
-          j=0;
-          for(i=0;i<lm;i++){
-             if(m.substr(i,1)=="#"){
-                t.value+=texto.substr(j,1);
-                j++;
-             }else if(m.substr(i,1)!="#"){
-                      t.value+=m.substr(i,1);
-                    }
-                    if(id!=8 && !cursorfixo)cursor++;
-                    if((j)==l+1)break;
 
-          }
-       }
-    }
-    if(cursorfixo && !livre)cursor--;
-      t.setSelectionRange(cursor, cursor);
-  }
-    </script>
   </section>
   <br><br><br>
   <footer class="bg-secondary d-flex flex-wrap justify-content-between align-items-center py-5">
@@ -745,12 +714,12 @@ function Doar(requisicao,resposta){
     </ul>
   </footer>
 </body>
-
+<script src="Doacao_main.js"></script>
 </html>
         `);
 }
 
-function SejaUmVoluntario(requisicao,resposta){
+function SejaUmVoluntario(requisicao,resposta){// feito
     resposta.end(`
     <!DOCTYPE html>
 <html>
@@ -758,7 +727,7 @@ function SejaUmVoluntario(requisicao,resposta){
     <meta charset="UTF-8" />
     <script src="assets/js/logado.js"></script>
     <title>Voluntário</title>
-    <link rel="stylesheet" type="text/css" href="assets/css/stilo_igor.css">
+    <link rel="stylesheet" type="text/css" href="/stilo_igor.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 
@@ -789,7 +758,7 @@ function SejaUmVoluntario(requisicao,resposta){
         </li>
       </ul>
     </div>
-    <button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button>
+    <a href="/sair"><button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button></a>
   </div>
 </nav>
 </header>
@@ -840,84 +809,24 @@ function SejaUmVoluntario(requisicao,resposta){
                         <br><br>
     
                         <button class="btn btn-success" type="button" onclick="validarCadastro() ">Enviar</button>
-                      </form>
-                      
-                      <script>
-          function validarCadastro() {
-    
-    var nome = document.getElementById('nome').value;
-    var email = document.getElementById('email').value;
-    var nome = document.getElementById('telefone').value;
-    var nome = document.getElementById('sobre_voce').value;
-   
-    if (nome.trim() !== '' && email.trim() !== '') {
-      
-      alert('Seu cadastro foi realizado com sucesso!');
-      location.reload();
-    } else {
-      
-      alert('Por favor, preencha todos os campos corretamente.');
-    }
-  }
-</script>
-                      </script>
                     </form>
             </div>
         </div>
     </div>
 
-    <!-- Add Bootstrap JavaScript here if needed -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script>
-      function mascara(m,t,e){
-    var cursor = t.selectionStart;
-    var texto = t.value;
-    texto = texto.replace(/\D/g,'');
-    var l = texto.length;
-    var lm = m.length;
-    if(window.event) {
-       id = e.keyCode;
-    } else if(e.which){
-       id = e.which;
-    }
-    cursorfixo=false;
-    if(cursor < l)cursorfixo=true;
-    var livre = false;
-    if(id == 16 || id == 19 || (id >= 33 && id <= 40))livre = true;
-    ii=0;
-    mm=0;
-    if(!livre){
-       if(id!=8){
-          t.value="";
-          j=0;
-          for(i=0;i<lm;i++){
-             if(m.substr(i,1)=="#"){
-                t.value+=texto.substr(j,1);
-                j++;
-             }else if(m.substr(i,1)!="#"){
-                      t.value+=m.substr(i,1);
-                    }
-                    if(id!=8 && !cursorfixo)cursor++;
-                    if((j)==l+1)break;
-
-          }
-       }
-    }
-    if(cursorfixo && !livre)cursor--;
-      t.setSelectionRange(cursor, cursor);
-  }
-    </script>
-</body>
-<footer class="d-flex flex-wrap justify-content-between align-items-center py-5 mx-4">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-5 mx-4">
     <p class="col-md-4 mb-0">&copy; 2023 Company, Inc</p>
 
     <ul class="nav col-md-4 justify-content-end">
         <li class="nav-item"><a href="#" class="nav-link px-2 text-black">Home</a></li>
     </ul>
 </footer>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="seja_um_voluntario.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </html>
     `);
 }
@@ -930,9 +839,9 @@ function Noticias(requisicao,resposta){//feito
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="icon" href="assets/images/logo3.png" type="icon">
+    <link rel="icon" href="/logo3.png" type="icon">
 
-    <link rel="stylesheet" href="assets/css/estilos.css" type="text/css">
+    <link rel="stylesheet" href="/estilos.css" type="text/css">
     <script src="assets/js/logado.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <title>Document</title>
@@ -965,7 +874,7 @@ function Noticias(requisicao,resposta){//feito
             </li>
           </ul>
         </div>
-        <button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button>
+        <a href="/sair"><button class="btn btn-success" onclick="Sair()" id="LOGADO">LOGIN</button></a>
       </div>
     </nav>
   </header>
@@ -1081,7 +990,7 @@ function Noticias(requisicao,resposta){//feito
     `);
 }
 
-function cartao(requisicao,resposta){// arrumar
+function cartao(requisicao,resposta){// feito
     resposta.end(`
     <!DOCTYPE html>
 <html lang="pt-BR">
@@ -1092,8 +1001,8 @@ function cartao(requisicao,resposta){// arrumar
     <title>Cartão</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/DOACAO_CARTAO.css">
-    <link rel="icon" href="assets/images/cartaoicon.png">
+    <link rel="stylesheet" href="/DOACAO_CARTAO.css">
+    <link rel="icon" href="/cartaoicon.png">
     <style>
         .container1 {
             display: flex;
@@ -1187,59 +1096,11 @@ function cartao(requisicao,resposta){// arrumar
 
                 <a href="/doar" class="voltar">Voltar para a página inicial</a>
             </form>
-            <script>
-                document.querySelector('form').addEventListener('submit', function (event) {
-                    event.preventDefault(); // Impede o envio padrão do formulário
-                    
-
-                    // Redireciona o usuário para a página inicial após abrir o PDF
-                });
-            </script>
-    <script>
-        function mascara(m,t,e){
-      var cursor = t.selectionStart;
-      var texto = t.value;
-      texto = texto.replace(/\D/g,'');
-      var l = texto.length;
-      var lm = m.length;
-      if(window.event) {
-         id = e.keyCode;
-      } else if(e.which){
-         id = e.which;
-      }
-      cursorfixo=false;
-      if(cursor < l)cursorfixo=true;
-      var livre = false;
-      if(id == 16 || id == 19 || (id >= 33 && id <= 40))livre = true;
-      ii=0;
-      mm=0;
-      if(!livre){
-         if(id!=8){
-            t.value="";
-            j=0;
-            for(i=0;i<lm;i++){
-               if(m.substr(i,1)=="#"){
-                  t.value+=texto.substr(j,1);
-                  j++;
-               }else if(m.substr(i,1)!="#"){
-                        t.value+=m.substr(i,1);
-                      }
-                      if(id!=8 && !cursorfixo)cursor++;
-                      if((j)==l+1)break;
-  
-            }
-         }
-      }
-      if(cursorfixo && !livre)cursor--;
-        t.setSelectionRange(cursor, cursor);
-    }
-      </script>
-            
             
         </div>
     </div>
 </body>
-
+<script src="/cartao.js"></script>
 </html>
     
     `);
