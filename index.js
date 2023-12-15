@@ -20,18 +20,26 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
     cookie: {
-        maxAge: 1000 * 60 * 30 //Sessão por 30 Minutos
+        maxAge: 1000 * 60 * 60 * 24 //Sessão por 30 Minutos
     }
 }))
 
-app.get('/', PaginaMenu);
-app.get('/paginaGerenciamento',PaginaGerenciamento);
-app.get('/Quem_somos',QuemSomos);
+app.get('/', PaginaMenu);//certo
+app.get('/paginaGerenciamento',PaginaGerenciamento/*,autenticar*/);//certo
+app.get('/Quem_somos',QuemSomos);//certo
 app.get('/doar',Doar);
-app.get('/seja_um_voluntario',SejaUmVoluntario);
+app.get('/seja_um_voluntario',SejaUmVoluntario);//certo
 app.get('/noticia',Noticias);
 
+//metodos de doação
+app.get('/cartao',cartao);//certo
+app.get('/pix',pix);//certo
+app.get('/boleto',boleto);
 
+
+app.listen(porta, host, () => {
+    console.log(`Servidor executando na url http://${host}:${porta}`);
+})
 
 app.post('/validarLogin', (requisicao, resposta) => {
     const email = requisicao.body.email;
@@ -42,13 +50,6 @@ app.post('/validarLogin', (requisicao, resposta) => {
     }
 
 })
-
-app.listen(porta, host, () => {
-    console.log(`Servidor executando na url http://${host}:${porta}`);
-})
-
-
-
 
 function autenticar(requisicao, resposta, next) {
     if (requisicao.session.usuarioAutenticado) {
@@ -130,7 +131,7 @@ function PaginaMenu(requisicao, resposta) {
                   <div class="carousel-caption text-start text-black">
                     <h1>Save Pets.</h1>
                     <p id="shadow" class="opacity-75">Juntos, podemos fazer a diferenca nas vidas dos nossos fieis amigos de quatro patas!</p>
-                    <p><a class="btn btn-lg btn-warning my-2" href="DOACAO_MAIN.html">Doe Agora!</a></p>
+                    <p><a class="btn btn-lg btn-warning my-2" href="/doar">Doe Agora!</a></p>
                   </div>
                 </div> 
               </div>
@@ -140,7 +141,7 @@ function PaginaMenu(requisicao, resposta) {
                   <div class="carousel-caption text-black">
                     <h1>Conquistas</h1>
                     <p id="shadow" class="">10.000T+ de Alimentos Arrecadados, +320 Caes Resgatados, 100+ Voluntarios</p>
-                    <p><a class="btn btn-lg btn-warning my-2" href="noticias.html">Acessar</a></p>
+                    <p><a class="btn btn-lg btn-warning my-2" href="/noticia">Acessar</a></p>
                   </div>
                 </div>
               </div>
@@ -176,7 +177,7 @@ function PaginaMenu(requisicao, resposta) {
                   <div class="p-3 text-white"><h2>Amor Pelos Animais</h2><br>
                     <p>A ONG Save Pets personifica o amor pelos animais, resgatando, cuidando e encontrando lares para eles. <br>
                       <br> Sua dedicação demonstra compaixão genuína e promove a conscientização sobre adoção responsável e direitos dos animais, transformando vidas peludas com esperança e cuidado.
-                    </p><a href="quem_somos.html" class="link-light">Descubra mais sobre Nos:</a></div>
+                    </p><a href="/Quem_somos" class="link-light">Descubra mais sobre Nos:</a></div>
                 </div>
               </div>
             </div>
@@ -191,7 +192,7 @@ function PaginaMenu(requisicao, resposta) {
                   <div class="p-3 text-black"><h2>Amor Pelos Animais</h2>
                     <p>A ONG Save Pets personifica o amor pelos animais, resgatando, cuidando e encontrando lares para eles. <br>
                       <br> Sua dedicação demonstra compaixão genuína e promove a conscientização sobre adoção responsável e direitos dos animais, transformando vidas peludas com esperança e cuidado.
-                    </p><a href="quem_somos.html" class="link-dark">Descubra mais sobre Nos:</a>
+                    </p><a href="/Quem_somos" class="link-dark">Descubra mais sobre Nos:</a>
                   </div>
                 </div>
                 <div class="col" id="colll">
@@ -220,7 +221,7 @@ function PaginaMenu(requisicao, resposta) {
           <p class="col-md-4 mb-0 mx-4">&copy; 2023 Company, Inc</p>
     
           <ul class="nav col-md-4 mx-4 justify-content-end">
-            <li class="nav-item"><a href="index.html" class="nav-link px-2 text-black">Home</a></li>
+            <li class="nav-item"><a href="/" class="nav-link px-2 text-black">Home</a></li>
           </ul>
         </footer>
     
@@ -376,7 +377,7 @@ function PaginaGerenciamento(requisicao, resposta){
     <p class="col-md-4 mb-0 mx-4">&copy; 2023 Company, Inc</p>
 
     <ul class="nav col-md-4 mx-4 justify-content-end">
-      <li class="nav-item"><a href="index.html" class="nav-link px-2 text-black">Home</a></li>
+      <li class="nav-item"><a href="/" class="nav-link px-2 text-black">Home</a></li>
     </ul>
   </footer>
 </body>
@@ -447,7 +448,7 @@ function QuemSomos(requisicao,resposta){
                 <div class="p-3 text-white"><h2>Quem Somos?</h2><br>
                   <p>Desde 2018, a ONG Save Pets dedica-se ao resgate de animais na localidade de Presidente Prudente e região.</p>
                   <p>Com uma equipe de trabalho voluntário dedicada, nossa missão é proporcionar amor, cuidado e novos lares para os animais em necessidade.</p>
-                  <a href="seja_um_voluntario.html" class="link-light">Voluntarie-se:</a></div>
+                  <a href="/seja_um_voluntario" class="link-light">Voluntarie-se:</a></div>
               </div>
             </div>
           </div>
@@ -510,7 +511,7 @@ function QuemSomos(requisicao,resposta){
       <p class="col-md-4 mb-0 mx-4">&copy; 2023 Company, Inc</p>
 
       <ul class="nav col-md-4 mx-4 justify-content-end">
-        <li class="nav-item"><a href="index.html" class="nav-link px-2 text-black">Home</a></li>
+        <li class="nav-item"><a href="/" class="nav-link px-2 text-black">Home</a></li>
       </ul>
     </footer>
 
@@ -540,4 +541,269 @@ function SejaUmVoluntario(requisicao,resposta){
 
 function Noticias(requisicao,resposta){
     resposta.end(``);
+}
+
+function cartao(requisicao,resposta){
+    resposta.end(`
+    <!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartão</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="/DOACAO_CARTAO.css">
+    <link rel="icon" href="/cartaoicon.png">
+    <style>
+        .container1 {
+            display: flex;
+            justify-content: center;
+            /* Alinhar os itens horizontalmente ao centro */
+            align-items: center;
+            /* Alinhar os itens verticalmente ao centro */
+            gap: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="container1">
+        <div class="container1">
+        <div >
+            <img src="/todas_as_bandeiras.png">
+        </div>
+        <div class="container-fluid">
+            <div>
+                <h1 style="font-weight: bold;"><u>Doação Via Cartão</u></h1>
+            </div>
+        </div>
+    </div>
+    </header>
+
+
+
+    <div class="container-fluid border border-info rounded mid ">
+        <div>
+            <h1>Dados</h1>
+            <form action="/doar" method="POST">
+                <div class="form-group">
+                    <label for="nome">Nome:</label><br>
+                    <input type="text" name="nome" size="40" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="CPF/CNPJ">CPF:</label><br>
+                    <input type="text" id="cpf-input" name="CPF/CNPJ" placeholder="000.000.000-00" size="13"
+                    maxlength="14" required class="form-control" onkeypress="mascaraCPF(event)"
+                    pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"><br>
+                    <label for="Data">Data de Nascimento:</label><br>
+                    <input type="date" name="Data" size="13" maxlength="14" required class="form-control">
+                </div>
+
+                <div class="form-check">
+                    <label for="opção de cartao">Selecione a opção de cartão:</label>
+                    <br>
+                    <input class="form-check-input" type="radio" name="opcao1" value="1" id="inlineRadio1" /> <label
+                        class="form-check-label" for="opcao1">Crédito</label><br>
+                    <input class="form-check-input" type="radio" name="opcao1" value="2" id="inlineRadio2" /><label
+                        class="form-check-label" for="opcao1">Débito</label>
+                    <br>
+                </div>
+
+                <div>
+                    <label for="cartão">Selecione a bandeira do cartão:</label>
+                    <select name=“selOpcao” class="form-control">
+                        <option value=“0”></option>
+                        <option value=“1”>MasterCard</option>
+                        <option value=“2”>VISA</option>
+                        <option value=“3”>Maestro</option>
+                        <option value=“4”>Elo</option>
+                        <option value=“5”>Alelo</option>
+                        <option value=“6”>Hipercard</option>
+                        <option value=“7”>Banco do Brasil</option>
+                        <option value=“8”>Diners Club International</option>
+                        <option value=“9”>American Express</option>
+                        <option value=“10”>VISA Electron</option>
+                    </select>
+                    <label for="valor">Valor:</label>
+                    <input type="text" name="valor" size="13" maxlength="14" class="form-control" required onkeypress="mascaraValor(event)">
+                </div>
+
+                <div class="form-group">
+                    <label for="numcartao">Numero do cartão:</label><br>
+                    <input type="text" name="numcartao" maxlength="14" required class="form-control" onkeypress="mascaraNumeroCartao(event)">
+                    <p><strong>somente numeros, sem pontos</strong></p>
+                    <label for="numcartao">Código CVV:</label><br>
+
+                    <input type="text" name="cvv" size="3" maxlength="3" required class="form-control" onkeypress="mascaraCVV(event)">
+                    <p class="peq2"><strong>localizado atrás do cartão</strong></p>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-outline-danger" style="margin-left: 100px;" type="button"
+                        onclick="location.reload()">Apagar</button>
+                    <input class="btn btn-outline-success" type="submit" value="Enviar" return false;>
+                </div>
+
+                <a href="/" class="voltar">Voltar para a página inicial</a>
+            </form>
+            <script>
+                document.querySelector('form').addEventListener('submit', function (event) {
+                    event.preventDefault(); // Impede o envio padrão do formulário
+                    
+
+                    // Redireciona o usuário para a página inicial após abrir o PDF
+                });
+            </script>
+
+            <script>
+                function mascaraCPF(event) {
+                    const input = event.target;
+                    const digit = event.key;
+
+                    if (isNaN(digit)) {
+                        event.preventDefault();
+                        return;
+                    }
+            </script>
+
+<script>
+    function mascaraValor(event) {
+        const input = event.target;
+        const digit = event.key;
+
+        if (isNaN(digit) || digit === ' ') {
+            event.preventDefault();
+            return;
+        }
+
+        const value = input.value.replace(/\D/g, '');
+        input.value = formatCurrency(value);
+    }
+
+    function mascaraNumeroCartao(event) {
+        const input = event.target;
+        const digit = event.key;
+
+        if (isNaN(digit) || digit === ' ') {
+            event.preventDefault();
+            return;
+        }
+
+        const value = input.value.replace(/\D/g, '');
+        input.value = formatCardNumber(value);
+    }
+
+    function formatCurrency(value) {
+        const number = Number(value) / 100;
+        return number.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function formatCardNumber(value) {
+        return value.replace(/(\d{4})(?=\d)/g, '$1 ');
+    }
+</script>
+<script>
+     function mascaraCVV(event) {
+                        const input = event.target;
+                        const digit = event.key;
+
+                        if (isNaN(digit) || digit === ' ') {
+                            event.preventDefault();
+                            return;
+                        }
+
+                        const value = input.value.replace(/\D/g, '');
+                        input.value = value.slice(0, 3);
+                    }
+</script>
+            
+            
+        </div>
+    </div>
+</body>
+
+</html>
+    `);
+}
+
+function boleto(requisicao,resposta){
+    resposta.end(`
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>Gerador de Boletos</title>
+    
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+        <link rel="stylesheet" href="/DOACAO_BOLETO.css">
+        <link href="/Boleto.png" rel="icon">
+    </head>
+    
+    <body>
+        <img src="/Boleto.png" alt="Logo Boleto" style="position: absolute; top: 0; left: 0; max-width: 150px;">
+        <div class="container">
+            <h1 class="mt-5">Pagamento Boleto</h1>
+            <p>Gerador de boletos:</p>
+            <img src="/Qrlogo.png" alt="QR Code Pix" style="max-width: 200px;" class="img-fluid">
+            <p>ou</p>
+            <form class="mt-4">
+                <div class="mb-3">
+                    <p>Clique aqui para gerar seu Boleto:</p>
+                    <button type="button" class="btn btn-primary" onclick="redirecionarParaOutraPagina()">Gerar Boleto</button>
+                    <script>
+                        // Função JavaScript para redirecionar para outra página
+                        function redirecionarParaOutraPagina() {
+                            window.open("https://www.guiamuriae.com.br/wp-content/uploads/2017/01/Boleto-bancario-Foto-WC.jpg", "_blank");
+                            window.location.href = '/'
+                        }
+                    </script>
+                </div>
+            </form><br><br> 
+            <a href="/" class="text-black" style="font-size: 30px;">Voltar</a>
+        </div>
+    </body>
+    
+    </html>
+        `);
+}
+
+function pix(requisicao,resposta){
+    resposta.end(`
+    <!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pagamento Pix</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/DOACAO_PIX.css">
+    <link href="assets/images/pix2.png" rel="icon">
+
+</head>
+
+<body class="bg-secondary text-white">
+
+    <img src="assets/images/pix2.png" alt="Logo Pix" style="position: absolute; top: 0; left: 0; max-height: 100px;">
+    <div class="container">
+        <h1 class="mt-5">Pagamento Pix</h1>
+        <p>Escaneie o QR code abaixo com o seu aplicativo Pix para fazer o pagamento:</p>
+        <img src="assets/images/pixdiff.png" alt="QR Code Pix" style="max-width: 180px;" class="img-fluid">
+        <p>ou</p>
+        <h5>Email: SavePets@org.br</h5>
+        <h5>Numero de Telefone: (18) 99887-7665</h5>
+
+        <br><br><br><br>
+        <a href="/" class="text-black" style="font-size: 30px;">Voltar</a>
+    </div>
+</body>
+
+</html>
+    `);
 }
